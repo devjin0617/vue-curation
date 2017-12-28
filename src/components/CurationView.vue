@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="max-width:1280px; margin:auto;">
     <el-row :gutter="20">
       <el-col :md="12">
         <el-card class="box-card" v-for="o in 10" :key="o">

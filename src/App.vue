@@ -27,7 +27,7 @@
       <el-main>
         <router-view/>
       </el-main>
-      <el-footer>Footer</el-footer>
+      <el-footer>Vue Curation. <el-button type="text">https://github.com/devjin0617/vue-curation</el-button></el-footer>
     </el-container>
   </div>
 </template>
