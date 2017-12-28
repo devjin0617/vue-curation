@@ -13,6 +13,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "element-theme-chalk": "^2.0.9",
     "element-ui": "^2.0.9",
     "firebase": "^4.8.1",
     "vue": "^2.5.2",
