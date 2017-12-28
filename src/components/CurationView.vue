@@ -2,6 +2,21 @@
   <div style="max-width:1280px; margin:auto;">
     <el-row :gutter="20">
       <el-col :md="12">
+        <el-card class="box-card">
+          <div>
+            <el-form ref="form" :model="form" label-width="80px">
+              <el-form-item label="Title">
+                <el-input v-model="form.name"></el-input>
+              </el-form-item>
+              <el-form-item label="Link">
+                <el-input v-model="form.link"></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="bottom clearfix" style="text-align:right;">
+            <el-button class="button">등록</el-button>
+          </div>
+        </el-card>
         <el-card class="box-card" v-for="o in 10" :key="o">
           <div slot="header" class="clearfix">
             <span>News Title {{ o }}</span>
@@ -15,6 +30,21 @@
       </el-col>
       <el-col :md="6">
         <div>
+          <el-card class="box-card">
+            <div>
+              <el-form ref="form" :model="form" label-width="80px">
+                <el-form-item label="Title">
+                  <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="Link">
+                  <el-input v-model="form.link"></el-input>
+                </el-form-item>
+              </el-form>
+            </div>
+            <div class="bottom clearfix" style="text-align:right;">
+              <el-button class="button">등록</el-button>
+            </div>
+          </el-card>
           <el-card class="box-card" v-for="o in 5" :key="o">
             <div  class="text item">
               <el-button type="text">{{'Community ' + o }}</el-button>
@@ -56,7 +86,11 @@ export default {
   name: 'curation-view',
   data () {
     return {
-      dialogTableVisible: false
+      dialogTableVisible: false,
+      form: {
+        title: '',
+        link: ''
+      }
     }
   },
   methods: {
