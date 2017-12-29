@@ -4,27 +4,29 @@
       <el-col :md="12">
         <el-card class="box-card">
           <div>
-            <el-form ref="form" :model="form" label-width="80px">
+            <el-form ref="form" :model="form.news" label-width="100px">
               <el-form-item label="Title">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="form.news.title"></el-input>
               </el-form-item>
               <el-form-item label="Link">
-                <el-input v-model="form.link"></el-input>
+                <el-input v-model="form.news.link"></el-input>
+              </el-form-item>
+              <el-form-item label="Description">
+                <el-input v-model="form.news.description"></el-input>
               </el-form-item>
             </el-form>
           </div>
           <div class="bottom clearfix" style="text-align:right;">
-            <el-button class="button">등록</el-button>
+            <el-button class="button" @click="addNews">등록</el-button>
           </div>
         </el-card>
-        <el-card class="box-card" v-for="o in 10" :key="o">
+        <el-card class="box-card" v-for="item in news" :key="item['.key']">
           <div slot="header" class="clearfix">
-            <span>News Title {{ o }}</span>
-            <el-button size="mini" round style="float: right;">보기</el-button>
+            <span>{{ item.title }}</span>
+            <el-button size="mini" round style="float: right;" @click="openUrl(item)">보기</el-button>
           </div>
           <div class="text item">
-            {{'List item ' + o }}<br>
-            {{'List item ' + o }}
+            {{ item.description }}
           </div>
         </el-card>
       </el-col>
@@ -34,10 +36,10 @@
             <div>
               <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="Title">
-                  <el-input v-model="form.name"></el-input>
+                  <el-input v-model="form.posts.title"></el-input>
                 </el-form-item>
                 <el-form-item label="Link">
-                  <el-input v-model="form.link"></el-input>
+                  <el-input v-model="form.posts.link"></el-input>
                 </el-form-item>
               </el-form>
             </div>
@@ -82,20 +84,59 @@
 </template>
 
 <script>
+import Firebase from 'firebase'
+let config = {
+}
+let firebaseApp = Firebase.initializeApp(config)
+let db = firebaseApp.database()
 export default {
   name: 'curation-view',
+  firebase () {
+    return {
+      news: db.ref('news'),
+      posts: db.ref('posts'),
+      config: db.ref('config')
+    }
+  },
   data () {
     return {
       dialogTableVisible: false,
       form: {
-        title: '',
-        link: ''
+        news: {
+          title: '',
+          link: '',
+          description: ''
+        },
+        posts: {
+          titls: '',
+          link: ''
+        }
       }
     }
   },
   methods: {
     openDialog () {
       this.dialogTableVisible = true
+    },
+    addNews () {
+      if (!this.form.news.title || !this.form.news.link || !this.form.news.description) {
+        this.$notify.error({
+          title: '오류',
+          message: '값을 모두 입력해주세요.'
+        })
+        return
+      }
+      this.$firebaseRefs.news.push({
+        title: this.form.news.title,
+        link: this.form.news.link,
+        description: this.form.news.description
+      })
+      this.form.news.title = ''
+      this.form.news.link = ''
+      this.form.news.description = ''
+    },
+    openUrl (item) {
+      window.open(item.link)
     }
   }
 }
