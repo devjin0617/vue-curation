@@ -2,6 +2,11 @@
 
 > A Vue.js project
 
+- Vuejs
+- Firebase
+- Login
+- Batch
+
 ## Build Setup
 
 ``` bash
