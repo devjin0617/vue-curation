@@ -2,10 +2,11 @@
   <div id="app">
     <el-container>
       <el-header>
-        <el-row :gutter="20">
-          <el-col :span="3">Vue Curation</el-col>
-          <el-col :span="18">
-            <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect"
+        <el-row>
+          <el-col :span="4">XRP Curation</el-col>
+          <el-col :span="16">
+            beta
+            <el-menu :default-active="activeIndex" v-if="false" mode="horizontal" @select="handleSelect"
               background-color="#222222"
               text-color="#FEFEFE"
               active-text-color="#31A2D8">
@@ -19,7 +20,7 @@
               <el-menu-item index="3"><a href="https://www.ele.me" target="_blank">Archive</a></el-menu-item>
             </el-menu>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="4">
             <el-button v-if="!isLoginState" size="small" @click="isLoginView = true">Login</el-button>
           </el-col>
         </el-row>
