@@ -20,7 +20,7 @@
             <el-button class="button" @click="addNews">등록</el-button>
           </div>
         </el-card>
-        <el-card class="box-card" v-for="item in news" :key="item['.key']">
+        <el-card class="box-card" v-for="item in newsList" :key="item['.key']">
           <div slot="header" class="clearfix">
             <span>{{ item.title }}</span>
             <el-button size="mini" round style="float: right;" @click="openUrl(item)">보기</el-button>
@@ -32,7 +32,7 @@
       </el-col>
       <el-col :md="6">
         <div>
-          <el-card class="box-card">
+          <el-card class="box-card" v-if="isLoginState">
             <div>
               <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item label="Title">
@@ -89,7 +89,7 @@ export default {
   name: 'curation-view',
   firebase () {
     return {
-      news: this.FBDB.ref('news'),
+      news: this.FBDB.ref('news').orderByChild('date').limitToLast(10),
       posts: this.FBDB.ref('posts'),
       config: this.FBDB.ref('config')
     }
@@ -105,13 +105,18 @@ export default {
         },
         posts: {
           titls: '',
-          link: ''
+          link: '',
+          date: ''
         }
       }
     }
   },
   computed: {
-    ...mapGetters(['isLoginState'])
+    ...mapGetters(['isLoginState']),
+    newsList: function () {
+      // `this` points to the vm instance
+      return this.news.sort((a, b) => { return new Date(b.date) - new Date(a.date) })
+    }
   },
   methods: {
     openDialog () {
@@ -128,7 +133,8 @@ export default {
       this.$firebaseRefs.news.push({
         title: this.form.news.title,
         link: this.form.news.link,
-        description: this.form.news.description
+        description: this.form.news.description,
+        date: new Date().getTime()
       })
       this.form.news.title = ''
       this.form.news.link = ''
