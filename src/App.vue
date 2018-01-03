@@ -20,7 +20,7 @@
             </el-menu>
           </el-col>
           <el-col :span="3">
-            <el-button size="small" @click="isLoginView = true">Login</el-button>
+            <el-button v-if="!isLoginState" size="small" @click="isLoginView = true">Login</el-button>
           </el-col>
         </el-row>
       </el-header>
@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'app',
   data () {
@@ -58,12 +59,33 @@ export default {
       loginForm: {
         email: '',
         password: ''
-      }
+      },
+      isLogined: false
     }
   },
+  computed: {
+    ...mapGetters(['isLoginState'])
+  },
   methods: {
+    ...mapActions(['setLoginState']),
     onSubmit () {
-      console.log('submit!')
+      this.Firebase.auth().signInWithEmailAndPassword(this.loginForm.email, this.loginForm.password).catch(error => {
+        // Handle Errors here.
+        let errorCode = error.code
+        let errorMessage = error.message
+        // ...
+        console.error('#signInWithEmailAndPassword', errorCode, errorMessage)
+      })
+
+      let user = this.Firebase.auth().currentUser
+      console.log(user)
+
+      if (user) {
+        this.setLoginState(true)
+        this.isLoginView = false
+      } else {
+        alert('로그인 실패')
+      }
     }
   }
 }

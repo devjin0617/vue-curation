@@ -2,7 +2,7 @@
   <div style="max-width:1280px; margin:auto;">
     <el-row :gutter="20">
       <el-col :md="12">
-        <el-card class="box-card">
+        <el-card class="box-card" v-if="isLoginState">
           <div>
             <el-form ref="form" :model="form.news" label-width="100px">
               <el-form-item label="Title">
@@ -84,18 +84,14 @@
 </template>
 
 <script>
-import Firebase from 'firebase'
-let config = {
-}
-let firebaseApp = Firebase.initializeApp(config)
-let db = firebaseApp.database()
+import { mapGetters } from 'vuex'
 export default {
   name: 'curation-view',
   firebase () {
     return {
-      news: db.ref('news'),
-      posts: db.ref('posts'),
-      config: db.ref('config')
+      news: this.FBDB.ref('news'),
+      posts: this.FBDB.ref('posts'),
+      config: this.FBDB.ref('config')
     }
   },
   data () {
@@ -113,6 +109,9 @@ export default {
         }
       }
     }
+  },
+  computed: {
+    ...mapGetters(['isLoginState'])
   },
   methods: {
     openDialog () {
