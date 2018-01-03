@@ -20,7 +20,7 @@
             </el-menu>
           </el-col>
           <el-col :span="3">
-            <el-button size="small">Login</el-button>
+            <el-button size="small" @click="isLoginView = true">Login</el-button>
           </el-col>
         </el-row>
       </el-header>
@@ -29,12 +29,43 @@
       </el-main>
       <el-footer>Vue Curation. <el-button type="text">https://github.com/devjin0617/vue-curation</el-button></el-footer>
     </el-container>
+
+    <el-dialog title="Login" :visible.sync="isLoginView" width="30%">
+      <div>
+        <el-form ref="form" :model="loginForm" label-width="120px">
+          <el-form-item label="Email">
+            <el-input type="email" v-model="loginForm.email"></el-input>
+          </el-form-item>
+          <el-form-item label="Password">
+            <el-input type="password" v-model="loginForm.password"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">Login</el-button>
+            <el-button>Cancel</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  data () {
+    return {
+      isLoginView: false,
+      loginForm: {
+        email: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+    onSubmit () {
+      console.log('submit!')
+    }
+  }
 }
 </script>
 
