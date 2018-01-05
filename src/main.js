@@ -17,6 +17,14 @@ let db = firebaseApp.database()
 Vue.prototype.Firebase = firebaseApp
 Vue.prototype.FBDB = db
 
+let loadingInstance
+Vue.prototype.Loading = (isLoading) => {
+  if (isLoading) {
+    loadingInstance = ElementUI.Loading({ fullscreen: true })
+  } else {
+    loadingInstance.close()
+  }
+}
 Vue.use(VueFire)
 Vue.use(ElementUI)
 
