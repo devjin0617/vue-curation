@@ -10,9 +10,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'element-theme-chalk'
 
 import Firebase from 'firebase'
-let config = {
-}
-let firebaseApp = Firebase.initializeApp(config)
+import { firebaseConfig } from './config'
+let firebaseApp = Firebase.initializeApp(firebaseConfig)
 let db = firebaseApp.database()
 
 Vue.prototype.Firebase = firebaseApp
