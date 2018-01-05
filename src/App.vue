@@ -65,10 +65,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isLoginState'])
+    ...mapGetters(['isLoginState', 'user'])
   },
   methods: {
-    ...mapActions(['setLoginState']),
+    ...mapActions(['setLoginState', 'setUser']),
     onSubmit () {
       this.Firebase.auth().signInWithEmailAndPassword(this.loginForm.email, this.loginForm.password).catch(error => {
         // Handle Errors here.
@@ -82,6 +82,7 @@ export default {
       console.log(user)
 
       if (user) {
+        this.setUser(user)
         this.setLoginState(true)
         this.isLoginView = false
       } else {

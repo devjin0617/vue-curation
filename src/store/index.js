@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isLogined: false
+    isLogined: false,
+    user: {}
   },
   mutations: {
     SET_LOGIN_STATE (state) {
@@ -15,11 +16,17 @@ export default new Vuex.Store({
   actions: {
     setLoginState ({commit}, loginState) {
       commit('SET_LOGIN_STATE', loginState)
+    },
+    setUser ({commit}, user) {
+      commit('SET_USER', user)
     }
   },
   getters: {
     isLoginState (state) {
       return state.isLogined
+    },
+    user (state) {
+      return state.user
     }
   }
 })
