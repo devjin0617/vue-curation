@@ -111,10 +111,17 @@ export default {
       }
     }
   },
+  mounted () {
+    this.$Loading(true)
+    // this.ElementUI.Loading({ fullscreen: true })
+  },
   computed: {
     ...mapGetters(['isLoginState']),
     newsList: function () {
       // `this` points to the vm instance
+      if (this.news && this.news.length > 0) {
+        this.$Loading(false)
+      }
       return this.news.sort((a, b) => { return new Date(b.date) - new Date(a.date) })
     }
   },

@@ -18,9 +18,10 @@ Vue.prototype.Firebase = firebaseApp
 Vue.prototype.FBDB = db
 
 let loadingInstance
-Vue.prototype.Loading = (isLoading) => {
+Vue.prototype.ElementUI = ElementUI
+Vue.prototype.$Loading = (isLoading) => {
   if (isLoading) {
-    loadingInstance = ElementUI.Loading({ fullscreen: true })
+    loadingInstance = ElementUI.Loading.service({ fullscreen: true })
   } else {
     loadingInstance.close()
   }
