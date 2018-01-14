@@ -34,7 +34,7 @@
         <div>
           <el-card class="box-card" v-if="isLoginState">
             <div>
-              <el-form ref="form" :model="form" label-width="80px">
+              <el-form ref="form" :model="form.posts" label-width="80px">
                 <el-form-item label="Title">
                   <el-input v-model="form.posts.title"></el-input>
                 </el-form-item>
@@ -44,12 +44,12 @@
               </el-form>
             </div>
             <div class="bottom clearfix" style="text-align:right;">
-              <el-button class="button">등록</el-button>
+              <el-button class="button" @click="addPost">등록</el-button>
             </div>
           </el-card>
-          <el-card class="box-card" v-for="o in 5" :key="o">
+          <el-card class="box-card" v-for="item in postList" :key="item['.key']">
             <div  class="text item">
-              <el-button type="text">{{'Community ' + o }}</el-button>
+              <el-button type="text" @click="openUrl(item)">{{item.title}}</el-button>
             </div>
           </el-card>
         </div>
@@ -90,7 +90,7 @@ export default {
   firebase () {
     return {
       news: this.FBDB.ref('news').orderByChild('date').limitToLast(10),
-      posts: this.FBDB.ref('posts'),
+      posts: this.FBDB.ref('posts').orderByChild('date').limitToLast(10),
       config: this.FBDB.ref('config')
     }
   },
@@ -117,12 +117,17 @@ export default {
   },
   computed: {
     ...mapGetters(['isLoginState']),
-    newsList: function () {
+    newsList () {
       // `this` points to the vm instance
       if (this.news && this.news.length > 0) {
-        this.$Loading(false)
+        this.$nextTick(() => {
+          this.$Loading(false)
+        })
       }
       return this.news.sort((a, b) => { return new Date(b.date) - new Date(a.date) })
+    },
+    postList () {
+      return this.posts.sort((a, b) => { return new Date(b.date) - new Date(a.date) })
     }
   },
   methods: {
@@ -146,6 +151,22 @@ export default {
       this.form.news.title = ''
       this.form.news.link = ''
       this.form.news.description = ''
+    },
+    addPost () {
+      if (!this.form.posts.title || !this.form.posts.link) {
+        this.$notify.error({
+          title: '오류',
+          message: '값을 모두 입력해주세요.'
+        })
+        return
+      }
+      this.$firebaseRefs.posts.push({
+        title: this.form.posts.title,
+        link: this.form.posts.link,
+        date: new Date().getTime()
+      })
+      this.form.posts.title = ''
+      this.form.posts.link = ''
     },
     openUrl (item) {
       window.open(item.link)
