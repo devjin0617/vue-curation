@@ -64,6 +64,9 @@ export default {
       isLogined: false
     }
   },
+  created () {
+    document.title = 'Vue Curation'
+  },
   computed: {
     ...mapGetters(['isLoginState', 'user'])
   },
