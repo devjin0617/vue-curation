@@ -73,13 +73,19 @@ export default {
   methods: {
     ...mapActions(['setLoginState', 'setUser']),
     onSubmit () {
-      this.Firebase.auth().signInWithEmailAndPassword(this.loginForm.email, this.loginForm.password).catch(error => {
-        // Handle Errors here.
-        let errorCode = error.code
-        let errorMessage = error.message
-        // ...
-        console.error('#signInWithEmailAndPassword', errorCode, errorMessage)
-      })
+      this.Firebase.auth().setPersistence('local')
+        .then(() => {
+          return this.Firebase.auth().signInWithEmailAndPassword(this.loginForm.email, this.loginForm.password).catch(error => {
+            // Handle Errors here.
+            let errorCode = error.code
+            let errorMessage = error.message
+            // ...
+            console.error('#signInWithEmailAndPassword', errorCode, errorMessage)
+          })
+        })
+        .catch(error => {
+          console.error(error)
+        })
 
       let user = this.Firebase.auth().currentUser
       console.log(user)
