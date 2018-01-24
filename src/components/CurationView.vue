@@ -29,6 +29,9 @@
             {{ item.description }}
           </div>
         </el-card>
+        <el-card style="text-align:center; cursor:pointer;">
+          더보기
+        </el-card>
       </el-col>
       <el-col :md="6">
         <div>
